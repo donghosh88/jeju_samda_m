@@ -7,488 +7,588 @@
 <style>
   *, *::before, *::after { box-sizing: border-box !important; margin: 0; padding: 0; }
   :root {
-    --color-js: #6366f1;
-    --color-seoguipo: #ec4899;
-    --color-smile: #f59e0b;
-    --color-anyu: #8b5cf6;
-    --color-oreum: #10b981;
-    --color-jeju: #3b82f6;
-    --color-jejuet: #ef4444;
-    --color-jejugwangyang: #0ea5e9;
-    --color-jejugoodmorning: #f97316;
-    --color-jejujungdawoon: #14b8a6;
-    --color-jejujungang: #84cc16;
-    --bg-main: #0f172a;
-    --bg-card: #1e293b;
-    --bg-card2: #243044;
-    --text-main: #f1f5f9;
-    --text-sub: #94a3b8;
-    --border: #334155;
-    --accent: #38bdf8;
-    --gold: #fbbf24;
-    --silver: #94a3b8;
-    --bronze: #cd7f32;
+    --primary: #1a3a6b;
+    --accent: #e8392a;
+    --bg: #f0f4fa;
+    --card-bg: #ffffff;
+    --text: #1a2340;
+    --sub: #5a6a8a;
+    --border: #d0daea;
+    --shadow: 0 4px 18px rgba(26,58,107,0.10);
+    --radius: 14px;
+    /* 대리점 색상 */
+    --c-js: #2563eb;
+    --c-seoguipo: #16a34a;
+    --c-smile: #f59e0b;
+    --c-anyu: #a21caf;
+    --c-oreum: #0891b2;
+    --c-jeju: #dc2626;
+    --c-jejuet: #7c3aed;
+    --c-jejugwangyang: #0d9488;
+    --c-jejugoodmorning: #ea580c;
+    --c-jejujungdawoon: #be185d;
+    --c-jejujungang: #4f46e5;
   }
-  html, body { width:100%; min-height:100vh; background:var(--bg-main); color:var(--text-main); font-family:'Segoe UI','Noto Sans KR',sans-serif; font-size:14px; }
-  body { overflow-x:hidden; }
+  html, body { height: 100%; background: var(--bg); font-family: 'Pretendard','Noto Sans KR',sans-serif; color: var(--text); }
+  body { min-width: 320px; overflow-x: auto; }
 
-  /* ===== HEADER ===== */
-  #header { text-align:center; padding:32px 16px 8px; background:linear-gradient(135deg,#0f172a 60%,#1e3a5f 100%); border-bottom:2px solid var(--border); position:sticky; top:0; z-index:100; }
-  #header h1 { font-size:40px; font-weight:900; background:linear-gradient(90deg,#38bdf8,#818cf8,#f472b6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; letter-spacing:-1px; }
-  #header .date-label { font-size:10px; font-weight:700; color:var(--accent); margin-top:4px; letter-spacing:2px; }
+  /* 보안 */
+  body { user-select: none; -webkit-user-select: none; }
 
-  /* ===== TOP CARDS ===== */
-  #top-cards { display:flex; flex-wrap:wrap; gap:12px; padding:20px 16px 8px; justify-content:center; }
-  .dealer-card { border-radius:14px; padding:14px 18px; min-width:160px; max-width:200px; flex:1 1 160px; box-shadow:0 4px 24px rgba(0,0,0,0.4); border:1.5px solid rgba(255,255,255,0.08); position:relative; overflow:hidden; transition:transform .2s,box-shadow .2s; cursor:default; }
-  .dealer-card:hover { transform:translateY(-4px) scale(1.03); box-shadow:0 8px 32px rgba(0,0,0,0.6); }
-  .dealer-card .crown { position:absolute; top:8px; right:10px; font-size:22px; }
-  .dealer-card .d-name { font-size:15px; font-weight:900; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .dealer-card .d-store { font-size:11px; color:rgba(255,255,255,0.7); margin-bottom:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .dealer-card .d-score { font-size:20px; font-weight:400; color:#fff; }
-  .dealer-card .d-score span { font-size:12px; opacity:.7; }
-  .dealer-card .d-rank { font-size:11px; margin-top:4px; opacity:.8; }
-
-  /* ===== TABS ===== */
-  #tab-bar { display:flex; flex-wrap:wrap; gap:6px; padding:16px 16px 0; position:sticky; top:90px; z-index:90; background:var(--bg-main); border-bottom:2px solid var(--border); padding-bottom:0; }
-  .tab-btn { padding:8px 14px; border-radius:8px 8px 0 0; border:1.5px solid var(--border); border-bottom:none; background:var(--bg-card2); color:var(--text-sub); font-size:13px; font-weight:600; cursor:pointer; transition:background .15s,color .15s; white-space:nowrap; }
-  .tab-btn.active { background:var(--accent); color:#0f172a; border-color:var(--accent); }
-  .tab-btn:hover:not(.active) { background:#1e3a5f; color:var(--text-main); }
-
-  /* ===== TABLE AREA ===== */
-  #tab-content { padding:0 16px 32px; overflow-x:auto; overflow-y:auto; min-height:300px; }
-  .tab-panel { display:none; }
-  .tab-panel.active { display:block; }
-
-  /* ===== TABLE ===== */
-  .data-table-wrap { overflow-x:auto; overflow-y:auto; max-height:70vh; border-radius:10px; border:1.5px solid var(--border); margin-top:12px; }
-  table { width:100%; border-collapse:collapse; min-width:900px; }
-  thead tr { background:linear-gradient(90deg,#1e3a5f,#1e293b); position:sticky; top:0; z-index:10; }
-  thead th { padding:10px 8px; font-size:12px; font-weight:700; color:var(--accent); text-align:center; border-bottom:2px solid var(--border); white-space:nowrap; }
-  tbody tr { border-bottom:1px solid var(--border); transition:background .12s; }
-  tbody tr:hover { background:rgba(56,189,248,0.07); }
-  tbody td { padding:8px 8px; font-size:12px; text-align:center; white-space:nowrap; cursor:default; }
-  tbody td:first-child { text-align:left; font-weight:600; }
-  .rank-1 { background:rgba(251,191,36,0.10); }
-  .rank-2 { background:rgba(148,163,184,0.07); }
-  .rank-3 { background:rgba(205,127,50,0.07); }
-  .rank-badge { display:inline-block; width:24px; height:24px; border-radius:50%; font-size:11px; font-weight:800; line-height:24px; text-align:center; }
-  .rank-badge.r1 { background:var(--gold); color:#0f172a; }
-  .rank-badge.r2 { background:var(--silver); color:#0f172a; }
-  .rank-badge.r3 { background:var(--bronze); color:#fff; }
-  .rank-badge.rn { background:var(--bg-card2); color:var(--text-sub); }
-  .score-high { color:#34d399; font-weight:700; }
-  .score-mid { color:#fbbf24; font-weight:600; }
-  .score-low { color:#f87171; }
-  .dealer-tag { display:inline-block; padding:2px 7px; border-radius:20px; font-size:10px; font-weight:700; color:#fff; }
-
-  /* AI Comment */
-  .ai-btn { padding:4px 10px; border-radius:6px; border:1.5px solid var(--accent); background:transparent; color:var(--accent); font-size:11px; font-weight:700; cursor:pointer; transition:background .15s,color .15s; white-space:nowrap; }
-  .ai-btn:hover { background:var(--accent); color:#0f172a; }
-  .ai-comment-row td { background:rgba(56,189,248,0.06); text-align:left; padding:10px 16px; font-size:12px; color:#bae6fd; line-height:1.7; border-bottom:2px solid var(--accent); }
-
-  /* Tooltip */
-  [data-tooltip] { position:relative; }
-  [data-tooltip]:hover::after { content:attr(data-tooltip); position:absolute; bottom:110%; left:50%; transform:translateX(-50%); background:#1e293b; color:#f1f5f9; border:1px solid var(--accent); border-radius:6px; padding:5px 10px; font-size:11px; white-space:pre; z-index:999; pointer-events:none; min-width:120px; box-shadow:0 4px 16px rgba(0,0,0,0.5); }
-
-  /* Trend badges */
-  .trend-up { color:#34d399; font-size:11px; }
-  .trend-none { color:#f87171; font-size:11px; }
-  .trend-new { color:#fbbf24; font-size:11px; }
-
-  /* Responsive */
-  @media(max-width:768px) {
-    #header h1 { font-size:24px; }
-    .dealer-card { min-width:130px; }
-    .tab-btn { font-size:11px; padding:6px 9px; }
-    tbody td, thead th { font-size:11px; padding:6px 5px; }
+  /* 헤더 */
+  .dashboard-header {
+    background: linear-gradient(135deg, #1a3a6b 0%, #2563eb 100%);
+    color: #fff;
+    text-align: center;
+    padding: 32px 20px 18px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 12px rgba(26,58,107,0.18);
   }
-  @media(max-width:480px) {
-    #header h1 { font-size:18px; }
-    #top-cards { gap:8px; }
-    .dealer-card { min-width:110px; padding:10px 10px; }
-    .d-name { font-size:12px !important; }
-    .d-score { font-size:16px !important; }
+  .dashboard-title { font-size: 2.5rem; font-weight: 900; letter-spacing: -1px; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.18); }
+  .dashboard-date { font-size: 0.75rem; font-weight: 700; color: #b8d0ff; margin-top: 6px; letter-spacing: 1px; }
+
+  /* 탭 */
+  .tab-bar {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    background: #fff; padding: 12px 18px 0;
+    border-bottom: 2px solid var(--border);
+    position: sticky; top: 100px; z-index: 90;
+    overflow-x: auto;
+  }
+  .tab-btn {
+    padding: 8px 18px; border-radius: 10px 10px 0 0;
+    border: 1.5px solid var(--border); border-bottom: none;
+    background: #f0f4fa; color: var(--sub);
+    font-size: 0.88rem; font-weight: 600; cursor: pointer;
+    transition: all 0.18s; white-space: nowrap;
+  }
+  .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .tab-btn:hover:not(.active) { background: #dbeafe; color: var(--primary); }
+
+  /* 메인 컨텐츠 */
+  .main-content { padding: 24px 18px; max-width: 1600px; margin: 0 auto; }
+
+  /* 대리점 1위 카드 */
+  .top-cards-section { margin-bottom: 28px; }
+  .top-cards-title { font-size: 1.1rem; font-weight: 800; color: var(--primary); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .top-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+  }
+  .top-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 16px 14px;
+    border-top: 5px solid var(--c-js);
+    min-width: 160px;
+    transition: transform 0.15s, box-shadow 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .top-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(26,58,107,0.16); }
+  .top-card-agency { font-size: 1.15rem; font-weight: 800; display: flex; align-items: center; justify-content: space-between; }
+  .top-card-crown { font-size: 1.3rem; }
+  .top-card-store { font-size: 0.82rem; color: var(--sub); margin: 4px 0 2px; font-weight: 600; }
+  .top-card-score { font-size: 1.1rem; font-weight: 500; color: var(--text); }
+  .top-card-rank { font-size: 0.75rem; color: #fff; background: rgba(0,0,0,0.18); border-radius: 6px; padding: 1px 7px; position: absolute; top: 10px; right: 10px; }
+
+  /* 테이블 공통 */
+  .table-wrap { overflow-x: auto; overflow-y: auto; border-radius: var(--radius); box-shadow: var(--shadow); background: #fff; }
+  table { width: 100%; border-collapse: collapse; min-width: 900px; font-size: 0.82rem; }
+  thead th {
+    background: var(--primary); color: #fff;
+    padding: 10px 8px; text-align: center;
+    font-weight: 700; font-size: 0.78rem;
+    position: sticky; top: 0; z-index: 10;
+    white-space: nowrap; border-right: 1px solid rgba(255,255,255,0.12);
+  }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.12s; }
+  tbody tr:hover { background: #eef4ff !important; }
+  tbody td { padding: 8px 8px; text-align: center; white-space: nowrap; border-right: 1px solid var(--border); }
+  tbody tr:nth-child(even) { background: #f7faff; }
+
+  /* 순위 뱃지 */
+  .rank-badge {
+    display: inline-block; width: 28px; height: 28px; line-height: 28px;
+    border-radius: 50%; font-weight: 800; font-size: 0.85rem; text-align: center;
+  }
+  .rank-1 { background: #ffd700; color: #7a5800; }
+  .rank-2 { background: #c0c0c0; color: #444; }
+  .rank-3 { background: #cd7f32; color: #fff; }
+  .rank-other { background: #e8edf5; color: var(--sub); }
+
+  /* 점수합 강조 */
+  .score-high { color: #1a3a6b; font-weight: 800; }
+
+  /* 대리점 색상 태그 */
+  .agency-tag {
+    display: inline-block; padding: 2px 9px; border-radius: 20px;
+    font-size: 0.75rem; font-weight: 700; color: #fff; white-space: nowrap;
   }
 
-  /* Scrollbar */
-  ::-webkit-scrollbar { width:6px; height:6px; }
-  ::-webkit-scrollbar-track { background:var(--bg-main); }
-  ::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
-  ::-webkit-scrollbar-thumb:hover { background:var(--accent); }
+  /* AI 코멘트 버튼 */
+  .ai-btn {
+    background: linear-gradient(90deg, #2563eb, #7c3aed);
+    color: #fff; border: none; border-radius: 8px;
+    padding: 4px 10px; font-size: 0.72rem; font-weight: 700;
+    cursor: pointer; white-space: nowrap; transition: opacity 0.15s;
+  }
+  .ai-btn:hover { opacity: 0.82; }
 
-  /* Loading overlay */
-  #loading { position:fixed; inset:0; background:#0f172a; display:flex; align-items:center; justify-content:center; z-index:9999; flex-direction:column; gap:16px; }
-  #loading .spinner { width:48px; height:48px; border:4px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; }
-  @keyframes spin { to { transform:rotate(360deg); } }
-  #loading p { color:var(--accent); font-size:14px; font-weight:600; }
+  /* AI 코멘트 모달 */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45); z-index: 1000;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal-box {
+    background: #fff; border-radius: 18px; padding: 28px 28px 22px;
+    max-width: 520px; width: 92%; box-shadow: 0 8px 40px rgba(0,0,0,0.22);
+    position: relative; max-height: 80vh; overflow-y: auto;
+  }
+  .modal-title { font-size: 1.1rem; font-weight: 800; color: var(--primary); margin-bottom: 14px; }
+  .modal-body { font-size: 0.88rem; line-height: 1.7; color: var(--text); }
+  .modal-close {
+    position: absolute; top: 14px; right: 16px;
+    background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--sub);
+  }
+  .modal-close:hover { color: var(--accent); }
+
+  /* 툴팁 */
+  [data-tooltip] { position: relative; cursor: pointer; }
+  [data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%);
+    background: #1a2340; color: #fff; padding: 5px 10px; border-radius: 7px;
+    font-size: 0.72rem; white-space: nowrap; z-index: 200;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    pointer-events: none;
+  }
+
+  /* 탭 패널 */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* 반응형 */
+  @media (max-width: 768px) {
+    .dashboard-title { font-size: 1.5rem; }
+    .top-cards-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    .tab-btn { font-size: 0.78rem; padding: 6px 12px; }
+    .main-content { padding: 14px 8px; }
+  }
+
+  /* 전월대비 색상 */
+  .trend-up { color: #16a34a; font-weight: 700; }
+  .trend-none { color: #94a3b8; }
+  .trend-new { color: #f59e0b; font-weight: 700; }
+
+  /* 섹션 타이틀 */
+  .section-title {
+    font-size: 1rem; font-weight: 800; color: var(--primary);
+    margin: 0 0 12px; padding-left: 10px;
+    border-left: 4px solid var(--primary);
+  }
+
+  /* 점수 셀 색상 */
+  .cell-zero { color: #cbd5e1; }
+  .cell-pos { color: #1a3a6b; font-weight: 700; }
 </style>
 </head>
 <body>
 
-<div id="loading">
-  <div class="spinner"></div>
-  <p>데이터 로딩 중...</p>
+<!-- 보안 스크립트 -->
+<script>
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('keydown', e => {
+    if (e.keyCode === 123 ||
+        (e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
+        (e.ctrlKey && e.shiftKey && e.keyCode === 74) ||
+        (e.ctrlKey && e.keyCode === 85) ||
+        (e.ctrlKey && e.keyCode === 83)) {
+      e.preventDefault();
+      return false;
+    }
+  });
+  // 개발자도구 감지
+  (function() {
+    const threshold = 160;
+    setInterval(() => {
+      if (window.outerWidth - window.innerWidth > threshold ||
+          window.outerHeight - window.innerHeight > threshold) {
+        document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-size:2rem;color:#e8392a;font-weight:900;">⚠️ 접근이 차단되었습니다.</div>';
+      }
+    }, 1000);
+  })();
+</script>
+
+<!-- 헤더 -->
+<div class="dashboard-header">
+  <div class="dashboard-title">삼다컨테스트 매장별 실적 대시보드</div>
+  <div class="dashboard-date">📅 기준일: 2026년 5월 6일 (누적)</div>
 </div>
 
-<div id="app" style="display:none;">
-  <div id="header">
-    <h1>삼다컨테스트 매장별 실적 대시보드</h1>
-    <div class="date-label" id="date-label">📅 기준일: 2026-05-05</div>
+<!-- 탭 바 -->
+<div class="tab-bar" id="tabBar">
+  <button class="tab-btn active" onclick="switchTab('overview', this)">📊 종합현황</button>
+  <button class="tab-btn" onclick="switchTab('js', this)">JS</button>
+  <button class="tab-btn" onclick="switchTab('seoguipo', this)">서귀포</button>
+  <button class="tab-btn" onclick="switchTab('smile', this)">스마일</button>
+  <button class="tab-btn" onclick="switchTab('anyu', this)">앤유</button>
+  <button class="tab-btn" onclick="switchTab('oreum', this)">오름</button>
+  <button class="tab-btn" onclick="switchTab('jeju', this)">제주</button>
+  <button class="tab-btn" onclick="switchTab('jejuet', this)">제주E&T</button>
+  <button class="tab-btn" onclick="switchTab('jejugwangyang', this)">제주광양</button>
+  <button class="tab-btn" onclick="switchTab('jejugoodmorning', this)">제주굿모닝</button>
+  <button class="tab-btn" onclick="switchTab('jejujungdawoon', this)">제주정다운</button>
+  <button class="tab-btn" onclick="switchTab('jejujungang', this)">제주중앙</button>
+</div>
+
+<!-- 메인 -->
+<div class="main-content">
+
+  <!-- 대리점 1위 카드 -->
+  <div class="top-cards-section">
+    <div class="top-cards-title">🏆 대리점별 1위 매장</div>
+    <div class="top-cards-grid" id="topCardsGrid"></div>
   </div>
 
-  <div id="top-cards"></div>
+  <!-- 종합현황 탭 -->
+  <div class="tab-panel active" id="panel-overview">
+    <div class="section-title">전체 매장 종합 실적</div>
+    <div class="table-wrap">
+      <table id="overviewTable">
+        <thead>
+          <tr>
+            <th>대리점</th>
+            <th>매장</th>
+            <th>순위</th>
+            <th>점수합</th>
+            <th>타사단골모집</th>
+            <th>010</th>
+            <th>MNP</th>
+            <th>MVNO</th>
+            <th>초고속</th>
+            <th>IPTV</th>
+            <th>매장실적소계</th>
+            <th>팀활동20점</th>
+            <th>팀활동30점</th>
+            <th>팀활동소계</th>
+          </tr>
+        </thead>
+        <tbody id="overviewBody"></tbody>
+      </table>
+    </div>
+  </div>
 
-  <div id="tab-bar"></div>
-  <div id="tab-content"></div>
+  <!-- 대리점별 탭 패널 -->
+  <div class="tab-panel" id="panel-js"><div class="section-title">JS 대리점 매장별 실적</div><div class="table-wrap"><table><thead id="agencyHead-js"></thead><tbody id="agencyBody-js"></tbody></table></div></div>
+  <div class="tab-panel" id="panel-seoguipo"><div class="section-title">서귀포 대리점 매장별 실적</div><div class="table-wrap"><table><thead id="agencyHead-seoguipo"></thead><tbody id="agencyBody-seoguipo"></tbody></table></div></div>
+  <div class="tab-panel" id="panel-smile"><div class="section-title">스마일 대리점 매장별 실적</div><div class="table-wrap"><table><thead id="agencyHead-smile"></thead><tbody id="agencyBody-smile"></tbody></table></div></div>
+  <div class="tab-panel" id="panel-anyu"><div class="section-title">앤유 대리점 매장별 실적</div><div class="table-wrap"><table><thead id="agencyHead-anyu"></thead><tbody id="agencyBody-anyu"></tbody></table></div></div>
+  <div class="tab-panel" id="panel-oreum"><div class="section-title">오름 대리점 매장별 실적</div><div class="table-wrap"><table><thead id="agencyHead-oreum"></thead><tbody id="agencyBody-oreum"></tbody></table></div></div>
+  <div class="tab-panel" id="panel-jeju"><div class="section-title">제주 대리점 매장별 실적</div><div class="table-wrap"><table><thead id="agencyHead-jeju"></thead><tbody id="agencyBody-jeju"></tbody></table></div></div>
+  <div class="tab-panel" id="panel-jejuet"><div class="section-title">제주E&T 대리점 매장별 실적</div><div class="table-wrap"><table><thead id="agencyHead-jejuet"></thead><tbody id="agencyBody-jejuet"></tbody></table></div></div>
+  <div class="tab-panel" id="panel-jejugwangyang"><div class="section-title">제주광양 대리점 매장별 실적</div><div class="table-wrap"><table><thead id="agencyHead-jejugwangyang"></thead><tbody id="agencyBody-jejugwangyang"></tbody></table></div></div>
+  <div class="tab-panel" id="panel-jejugoodmorning"><div class="section-title">제주굿모닝 대리점 매장별 실적</div><div class="table-wrap"><table><thead id="agencyHead-jejugoodmorning"></thead><tbody id="agencyBody-jejugoodmorning"></tbody></table></div></div>
+  <div class="tab-panel" id="panel-jejujungdawoon"><div class="section-title">제주정다운 대리점 매장별 실적</div><div class="table-wrap"><table><thead id="agencyHead-jejujungdawoon"></thead><tbody id="agencyBody-jejujungdawoon"></tbody></table></div></div>
+  <div class="tab-panel" id="panel-jejujungang"><div class="section-title">제주중앙 대리점 매장별 실적</div><div class="table-wrap"><table><thead id="agencyHead-jejujungang"></thead><tbody id="agencyBody-jejujungang"></tbody></table></div></div>
+
+</div>
+
+<!-- AI 코멘트 모달 -->
+<div class="modal-overlay" id="aiModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modalTitle">AI 실적 분석 코멘트</div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
 </div>
 
 <script>
-// ===== 보안 =====
-document.addEventListener('contextmenu', e => e.preventDefault());
-document.addEventListener('keydown', e => {
-  if (e.keyCode === 123 ||
-      (e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
-      (e.ctrlKey && e.shiftKey && e.keyCode === 74) ||
-      (e.ctrlKey && e.keyCode === 85) ||
-      (e.ctrlKey && e.keyCode === 83)) {
-    e.preventDefault();
-    return false;
-  }
-});
+// ===================== 데이터 =====================
+const RAW_DATA = [
+  {date:"2026-05-06",agency:"오름",store:"오름 본점",rank:1,score:45.5,t_danggol:"▲ 7%",t_010:"▲ 10%",t_mnp:"▲ 200%",t_mvno:"▲ 125%",t_speed:"당월無",t_iptv:"당월無",danggol:2,danggol_p:2,o010:2,o010_p:2,mnp:16,mnp_p:32,mvno:5,mvno_p:15,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:51,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주광양",store:"제주광양 중앙로 본점",rank:2,score:38.0,t_danggol:"▲ 20%",t_010:"▲ 6%",t_mnp:"▲ 26%",t_mvno:"당월無",t_speed:"▲ 21%",t_iptv:"▲ 33%",danggol:2,danggol_p:2,o010:1,o010_p:1,mnp:6,mnp_p:12,mvno:0,mvno_p:0,speed:3,speed_p:9,iptv:4,iptv_p:12,subtotal:36,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주굿모닝",store:"제주굿모닝 해피점",rank:3,score:35.0,t_danggol:"당월無",t_010:"▲ 40%",t_mnp:"▲ 19%",t_mvno:"▲ 50%",t_speed:"▲ 13%",t_iptv:"▲ 15%",danggol:0,danggol_p:0,o010:6,o010_p:6,mnp:3,mnp_p:6,mvno:2,mvno_p:6,speed:2,speed_p:6,iptv:2,iptv_p:6,subtotal:30,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"오름",store:"오름 아라점",rank:4,score:34.5,t_danggol:"▲ 4%",t_010:"▲ 4%",t_mnp:"▲ 24%",t_mvno:"당월無",t_speed:"▲ 22%",t_iptv:"▲ 67%",danggol:2,danggol_p:2,o010:1,o010_p:1,mnp:4,mnp_p:8,mvno:0,mvno_p:0,speed:2,speed_p:6,iptv:4,iptv_p:12,subtotal:29,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"스마일",store:"스마일 동홍점",rank:5,score:28.5,t_danggol:"▲ 20%",t_010:"▲ 12%",t_mnp:"▲ 100%",t_mvno:"당월無",t_speed:"당월無",t_iptv:"당월無",danggol:1,danggol_p:1,o010:2,o010_p:2,mnp:7,mnp_p:14,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:17,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"JS",store:"JS 인제점",rank:5,score:28.5,t_danggol:"▲ 8%",t_010:"▲ 19%",t_mnp:"▲ 23%",t_mvno:"당월無",t_speed:"▲ 13%",t_iptv:"▲ 11%",danggol:2,danggol_p:2,o010:3,o010_p:3,mnp:3,mnp_p:6,mvno:0,mvno_p:0,speed:1,speed_p:3,iptv:1,iptv_p:3,subtotal:17,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주중앙",store:"제주중앙 본점",rank:7,score:28.0,t_danggol:"▲ 71%",t_010:"당월無",t_mnp:"▲ 9%",t_mvno:"당월無",t_speed:"▲ 25%",t_iptv:"▲ 67%",danggol:5,danggol_p:5,o010:0,o010_p:0,mnp:1,mnp_p:2,mvno:0,mvno_p:0,speed:1,speed_p:3,iptv:2,iptv_p:6,subtotal:16,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주중앙",store:"제주중앙 연동점",rank:8,score:25.5,t_danggol:"당월無",t_010:"▲ 100%",t_mnp:"▲ 17%",t_mvno:"당월無",t_speed:"▲ 100%",t_iptv:"▲ 100%",danggol:0,danggol_p:0,o010:3,o010_p:3,mnp:1,mnp_p:2,mvno:0,mvno_p:0,speed:1,speed_p:3,iptv:1,iptv_p:3,subtotal:11,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주굿모닝",store:"제주굿모닝 이도점",rank:9,score:24.5,t_danggol:"당월無",t_010:"▲ 15%",t_mnp:"당월無",t_mvno:"당월無",t_speed:"▲ 7%",t_iptv:"▲ 8%",danggol:0,danggol_p:0,o010:3,o010_p:3,mnp:0,mnp_p:0,mvno:0,mvno_p:0,speed:1,speed_p:3,iptv:1,iptv_p:3,subtotal:9,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"스마일",store:"스마일 삼화점",rank:9,score:24.5,t_danggol:"당월無",t_010:"▲ 13%",t_mnp:"▲ 17%",t_mvno:"전월無당월有",t_speed:"전월無당월有",t_iptv:"▲ 50%",danggol:0,danggol_p:0,o010:1,o010_p:1,mnp:1,mnp_p:2,mvno:0,mvno_p:0,speed:1,speed_p:3,iptv:1,iptv_p:3,subtotal:9,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주굿모닝",store:"제주굿모닝 노형뉴타운점",rank:11,score:24.0,t_danggol:"▲ 18%",t_010:"▲ 7%",t_mnp:"▲ 50%",t_mvno:"전월無당월有",t_speed:"전월無당월有",t_iptv:"전월無당월有",danggol:2,danggol_p:2,o010:1,o010_p:1,mnp:1,mnp_p:2,mvno:1,mvno_p:3,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:8,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"오름",store:"오름 인제점",rank:11,score:24.0,t_danggol:"당월無",t_010:"당월無",t_mnp:"▲ 133%",t_mvno:"전월無당월有",t_speed:"당월無",t_iptv:"당월無",danggol:0,danggol_p:0,o010:0,o010_p:0,mnp:4,mnp_p:8,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:8,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주굿모닝",store:"제주굿모닝 동우점",rank:11,score:24.0,t_danggol:"당월無",t_010:"▲ 200%",t_mnp:"▲ 29%",t_mvno:"당월無",t_speed:"전월無당월有",t_iptv:"전월無당월有",danggol:0,danggol_p:0,o010:4,o010_p:4,mnp:2,mnp_p:4,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:8,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"스마일",store:"스마일 남녕점",rank:11,score:24.0,t_danggol:"▲ 24%",t_010:"▲ 67%",t_mnp:"▲ 33%",t_mvno:"당월無",t_speed:"전월無당월有",t_iptv:"전월無당월有",danggol:4,danggol_p:4,o010:2,o010_p:2,mnp:1,mnp_p:2,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:8,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"서귀포",store:"서귀포 본점",rank:11,score:24.0,t_danggol:"당월無",t_010:"▲ 14%",t_mnp:"▲ 6%",t_mvno:"▲ 100%",t_speed:"당월無",t_iptv:"당월無",danggol:0,danggol_p:0,o010:3,o010_p:3,mnp:1,mnp_p:2,mvno:1,mvno_p:3,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:8,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주E&T",store:"제주E&T 도남점",rank:16,score:23.5,t_danggol:"전월無당월有",t_010:"▲ 33%",t_mnp:"▲ 100%",t_mvno:"▲ 100%",t_speed:"당월無",t_iptv:"당월無",danggol:1,danggol_p:1,o010:1,o010_p:1,mnp:1,mnp_p:2,mvno:1,mvno_p:3,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:7,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주E&T",store:"제주E&T 삼화점",rank:16,score:23.5,t_danggol:"당월無",t_010:"▲ 50%",t_mnp:"▲ 67%",t_mvno:"전월無당월有",t_speed:"전월無당월有",t_iptv:"전월無당월有",danggol:0,danggol_p:0,o010:3,o010_p:3,mnp:2,mnp_p:4,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:7,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주E&T",store:"제주E&T 노형점",rank:16,score:23.5,t_danggol:"당월無",t_010:"▲ 50%",t_mnp:"전월無당월有",t_mvno:"전월無당월有",t_speed:"전월無당월有",t_iptv:"전월無당월有",danggol:0,danggol_p:0,o010:2,o010_p:2,mnp:1,mnp_p:2,mvno:1,mvno_p:3,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:7,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주광양",store:"제주광양 아라점",rank:19,score:23.0,t_danggol:"▲ 20%",t_010:"당월無",t_mnp:"▲ 50%",t_mvno:"전월無당월有",t_speed:"당월無",t_iptv:"전월無당월有",danggol:1,danggol_p:1,o010:0,o010_p:0,mnp:1,mnp_p:2,mvno:1,mvno_p:3,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:6,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"스마일",store:"스마일 화북점",rank:20,score:22.5,t_danggol:"▲ 67%",t_010:"▲ 50%",t_mnp:"▲ 13%",t_mvno:"전월無당월有",t_speed:"당월無",t_iptv:"당월無",danggol:2,danggol_p:2,o010:1,o010_p:1,mnp:1,mnp_p:2,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:5,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주광양",store:"제주광양 서부점",rank:20,score:22.5,t_danggol:"당월無",t_010:"▲ 71%",t_mnp:"당월無",t_mvno:"전월無당월有",t_speed:"전월無당월有",t_iptv:"전월無당월有",danggol:0,danggol_p:0,o010:5,o010_p:5,mnp:0,mnp_p:0,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:5,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주광양",store:"제주광양 연동문화점",rank:22,score:22.0,t_danggol:"▲ 13%",t_010:"▲ 33%",t_mnp:"당월無",t_mvno:"당월無",t_speed:"당월無",t_iptv:"당월無",danggol:2,danggol_p:2,o010:2,o010_p:2,mnp:0,mnp_p:0,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:4,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주광양",store:"제주광양 터미널점",rank:22,score:22.0,t_danggol:"▲ 16%",t_010:"▲ 9%",t_mnp:"당월無",t_mvno:"당월無",t_speed:"당월無",t_iptv:"당월無",danggol:3,danggol_p:3,o010:1,o010_p:1,mnp:0,mnp_p:0,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:4,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주굿모닝",store:"제주굿모닝 연동점",rank:22,score:22.0,t_danggol:"▲ 20%",t_010:"▲ 22%",t_mnp:"당월無",t_mvno:"전월無당월有",t_speed:"당월無",t_iptv:"당월無",danggol:2,danggol_p:2,o010:2,o010_p:2,mnp:0,mnp_p:0,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:4,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주E&T",store:"제주E&T 시청점",rank:22,score:22.0,t_danggol:"▲ 33%",t_010:"당월無",t_mnp:"▲ 17%",t_mvno:"당월無",t_speed:"당월無",t_iptv:"당월無",danggol:2,danggol_p:2,o010:0,o010_p:0,mnp:1,mnp_p:2,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:4,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주굿모닝",store:"제주굿모닝 성산점",rank:26,score:21.5,t_danggol:"▲ 14%",t_010:"당월無",t_mnp:"▲ 33%",t_mvno:"당월無",t_speed:"전월無당월有",t_iptv:"전월無당월有",danggol:1,danggol_p:1,o010:0,o010_p:0,mnp:1,mnp_p:2,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:3,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주정다운",store:"제주정다운 서사라점",rank:27,score:21.0,t_danggol:"▲ 18%",t_010:"당월無",t_mnp:"당월無",t_mvno:"당월無",t_speed:"당월無",t_iptv:"당월無",danggol:2,danggol_p:2,o010:0,o010_p:0,mnp:0,mnp_p:0,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:2,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주",store:"제주 본점",rank:27,score:21.0,t_danggol:"당월無",t_010:"▲ 33%",t_mnp:"당월無",t_mvno:"당월無",t_speed:"전월無당월有",t_iptv:"전월無당월有",danggol:0,danggol_p:0,o010:2,o010_p:2,mnp:0,mnp_p:0,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:2,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"서귀포",store:"서귀포 녹원점",rank:27,score:21.0,t_danggol:"▲ 9%",t_010:"▲ 100%",t_mnp:"당월無",t_mvno:"당월無",t_speed:"전월無당월有",t_iptv:"전월無당월有",danggol:1,danggol_p:1,o010:1,o010_p:1,mnp:0,mnp_p:0,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:2,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주광양",store:"제주광양 대학로점",rank:27,score:21.0,t_danggol:"▲ 25%",t_010:"당월無",t_mnp:"당월無",t_mvno:"전월無당월有",t_speed:"전월無당월有",t_iptv:"전월無당월有",danggol:2,danggol_p:2,o010:0,o010_p:0,mnp:0,mnp_p:0,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:2,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주광양",store:"제주광양 삼화점",rank:31,score:20.5,t_danggol:"▲ 10%",t_010:"당월無",t_mnp:"당월無",t_mvno:"당월無",t_speed:"당월無",t_iptv:"당월無",danggol:1,danggol_p:1,o010:0,o010_p:0,mnp:0,mnp_p:0,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:1,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"오름",store:"오름 한림점",rank:31,score:20.5,t_danggol:"당월無",t_010:"▲ 13%",t_mnp:"당월無",t_mvno:"전월無당월有",t_speed:"전월無당월有",t_iptv:"전월無당월有",danggol:0,danggol_p:0,o010:1,o010_p:1,mnp:0,mnp_p:0,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:1,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주굿모닝",store:"제주굿모닝 서문점",rank:31,score:20.5,t_danggol:"▲ 10%",t_010:"당월無",t_mnp:"전월無당월有",t_mvno:"전월無당월有",t_speed:"전월無당월有",t_iptv:"전월無당월有",danggol:1,danggol_p:1,o010:0,o010_p:0,mnp:0,mnp_p:0,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:1,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"스마일",store:"스마일 대정점",rank:31,score:20.5,t_danggol:"전월無당월有",t_010:"▲ 14%",t_mnp:"당월無",t_mvno:"전월無당월有",t_speed:"전월無당월有",t_iptv:"전월無당월有",danggol:0,danggol_p:0,o010:1,o010_p:1,mnp:0,mnp_p:0,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:1,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주E&T",store:"제주E&T 연북로점",rank:35,score:20.0,t_danggol:"전월無당월有",t_010:"당월無",t_mnp:"당월無",t_mvno:"당월無",t_speed:"전월無당월有",t_iptv:"전월無당월有",danggol:0,danggol_p:0,o010:0,o010_p:0,mnp:0,mnp_p:0,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:0,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"앤유",store:"앤유 한림점",rank:35,score:20.0,t_danggol:"전월無당월有",t_010:"당월無",t_mnp:"당월無",t_mvno:"전월無당월有",t_speed:"전월無당월有",t_iptv:"전월無당월有",danggol:0,danggol_p:0,o010:0,o010_p:0,mnp:0,mnp_p:0,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:0,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"앤유",store:"앤유 본점",rank:35,score:20.0,t_danggol:"당월無",t_010:"당월無",t_mnp:"당월無",t_mvno:"전월無당월有",t_speed:"전월無당월有",t_iptv:"전월無당월有",danggol:0,danggol_p:0,o010:0,o010_p:0,mnp:0,mnp_p:0,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:0,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주정다운",store:"제주정다운 본점",rank:35,score:20.0,t_danggol:"전월無당월有",t_010:"당월無",t_mnp:"전월無당월有",t_mvno:"전월無당월有",t_speed:"당월無",t_iptv:"당월無",danggol:0,danggol_p:0,o010:0,o010_p:0,mnp:0,mnp_p:0,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:0,ta20:20,ta30:0,ta10:0,tasum:20},
+  {date:"2026-05-06",agency:"제주정다운",store:"제주정다운 외도점",rank:35,score:20.0,t_danggol:"전월無당월有",t_010:"전월無당월有",t_mnp:"당월無",t_mvno:"전월無당월有",t_speed:"전월無당월有",t_iptv:"전월無당월有",danggol:0,danggol_p:0,o010:0,o010_p:0,mnp:0,mnp_p:0,mvno:0,mvno_p:0,speed:0,speed_p:0,iptv:0,iptv_p:0,subtotal:0,ta20:20,ta30:0,ta10:0,tasum:20}
+];
 
-// ===== 데이터 (난독화 저장) =====
-// 데이터는 Base64 인코딩 + 런타임 복호화 방식으로 처리
-const _d = (function(){
-  const raw = [
-    {날짜:"2026-05-05",대리점:"오름",매장:"오름 본점",순위:1,점수합:18.5,전월비교:{타사단골:"▲ 7%","010":"당월無",MNP:"▲ 163%",MVNO:"▲ 75%",초고속:"당월無",IPTV:"당월無"},타사단골실적:2,타사단골점수:2,"010실적":0,"010점수":0,MNP실적:13,MNP점수:26,MVNO실적:3,MVNO점수:9,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:37,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주광양",매장:"제주광양 중앙로 본점",순위:2,점수합:10.5,전월비교:{타사단골:"▲ 10%","010":"▲ 6%",MNP:"▲ 22%",MVNO:"당월無",초고속:"▲ 7%",IPTV:"▲ 17%"},타사단골실적:1,타사단골점수:1,"010실적":1,"010점수":1,MNP실적:5,MNP점수:10,MVNO실적:0,MVNO점수:0,초고속실적:1,초고속점수:3,IPTV실적:2,IPTV점수:6,매장소계:21,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주굿모닝",매장:"제주굿모닝 해피점",순위:3,점수합:8.0,전월비교:{타사단골:"당월無","010":"▲ 27%",MNP:"▲ 19%",MVNO:"▲ 50%",초고속:"당월無",IPTV:"당월無"},타사단골실적:0,타사단골점수:0,"010실적":4,"010점수":4,MNP실적:3,MNP점수:6,MVNO실적:2,MVNO점수:6,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:16,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"오름",매장:"오름 아라점",순위:4,점수합:7.5,전월비교:{타사단골:"▲ 2%","010":"당월無",MNP:"▲ 24%",MVNO:"당월無",초고속:"▲ 11%",IPTV:"▲ 17%"},타사단골실적:1,타사단골점수:1,"010실적":0,"010점수":0,MNP실적:4,MNP점수:8,MVNO실적:0,MVNO점수:0,초고속실적:1,초고속점수:3,IPTV실적:1,IPTV점수:3,매장소계:15,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주중앙",매장:"제주중앙 본점",순위:4,점수합:7.5,전월비교:{타사단골:"▲ 57%","010":"당월無",MNP:"▲ 9%",MVNO:"당월無",초고속:"▲ 25%",IPTV:"▲ 67%"},타사단골실적:4,타사단골점수:4,"010실적":0,"010점수":0,MNP실적:1,MNP점수:2,MVNO실적:0,MVNO점수:0,초고속실적:1,초고속점수:3,IPTV실적:2,IPTV점수:6,매장소계:15,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"스마일",매장:"스마일 동홍점",순위:6,점수합:5.0,전월비교:{타사단골:"▲ 20%","010":"▲ 6%",MNP:"▲ 57%",MVNO:"당월無",초고속:"당월無",IPTV:"당월無"},타사단골실적:1,타사단골점수:1,"010실적":1,"010점수":1,MNP실적:4,MNP점수:8,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:10,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주굿모닝",매장:"제주굿모닝 이도점",순위:7,점수합:4.0,전월비교:{타사단골:"당월無","010":"▲ 10%",MNP:"당월無",MVNO:"당월無",초고속:"▲ 7%",IPTV:"▲ 8%"},타사단골실적:0,타사단골점수:0,"010실적":2,"010점수":2,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:1,초고속점수:3,IPTV실적:1,IPTV점수:3,매장소계:8,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주굿모닝",매장:"제주굿모닝 노형뉴타운점",순위:7,점수합:4.0,전월비교:{타사단골:"▲ 18%","010":"▲ 7%",MNP:"▲ 50%",MVNO:"전월無당월有",초고속:"전월無당월有",IPTV:"전월無당월有"},타사단골실적:2,타사단골점수:2,"010실적":1,"010점수":1,MNP실적:1,MNP점수:2,MVNO실적:1,MVNO점수:3,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:8,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"오름",매장:"오름 인제점",순위:7,점수합:4.0,전월비교:{타사단골:"당월無","010":"당월無",MNP:"▲ 133%",MVNO:"전월無당월有",초고속:"당월無",IPTV:"당월無"},타사단골실적:0,타사단골점수:0,"010실적":0,"010점수":0,MNP실적:4,MNP점수:8,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:8,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주굿모닝",매장:"제주굿모닝 동우점",순위:10,점수합:3.5,전월비교:{타사단골:"당월無","010":"▲ 150%",MNP:"▲ 29%",MVNO:"당월無",초고속:"전월無당월有",IPTV:"전월無당월有"},타사단골실적:0,타사단골점수:0,"010실적":3,"010점수":3,MNP실적:2,MNP점수:4,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:7,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주E&T",매장:"제주E&T 도남점",순위:10,점수합:3.5,전월비교:{타사단골:"전월無당월有","010":"▲ 33%",MNP:"▲ 100%",MVNO:"▲ 100%",초고속:"당월無",IPTV:"당월無"},타사단골실적:1,타사단골점수:1,"010실적":1,"010점수":1,MNP실적:1,MNP점수:2,MVNO실적:1,MVNO점수:3,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:7,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"스마일",매장:"스마일 남녕점",순위:12,점수합:3.0,전월비교:{타사단골:"▲ 18%","010":"▲ 33%",MNP:"▲ 33%",MVNO:"당월無",초고속:"전월無당월有",IPTV:"전월無당월有"},타사단골실적:3,타사단골점수:3,"010실적":1,"010점수":1,MNP실적:1,MNP점수:2,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:6,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"JS",매장:"JS 인제점",순위:13,점수합:2.5,전월비교:{타사단골:"▲ 8%","010":"▲ 6%",MNP:"▲ 8%",MVNO:"당월無",초고속:"당월無",IPTV:"당월無"},타사단골실적:2,타사단골점수:2,"010실적":1,"010점수":1,MNP실적:1,MNP점수:2,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:5,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주중앙",매장:"제주중앙 연동점",순위:13,점수합:2.5,전월비교:{타사단골:"당월無","010":"▲ 100%",MNP:"▲ 17%",MVNO:"당월無",초고속:"당월無",IPTV:"당월無"},타사단골실적:0,타사단골점수:0,"010실적":3,"010점수":3,MNP실적:1,MNP점수:2,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:5,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"스마일",매장:"스마일 화북점",순위:13,점수합:2.5,전월비교:{타사단골:"▲ 67%","010":"▲ 50%",MNP:"▲ 13%",MVNO:"전월無당월有",초고속:"당월無",IPTV:"당월無"},타사단골실적:2,타사단골점수:2,"010실적":1,"010점수":1,MNP실적:1,MNP점수:2,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:5,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주E&T",매장:"제주E&T 삼화점",순위:16,점수합:2.0,전월비교:{타사단골:"당월無","010":"▲ 33%",MNP:"▲ 33%",MVNO:"전월無당월有",초고속:"전월無당월有",IPTV:"전월無당월有"},타사단골실적:0,타사단골점수:0,"010실적":2,"010점수":2,MNP실적:1,MNP점수:2,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:4,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주광양",매장:"제주광양 연동문화점",순위:17,점수합:1.5,전월비교:{타사단골:"▲ 13%","010":"▲ 17%",MNP:"당월無",MVNO:"당월無",초고속:"당월無",IPTV:"당월無"},타사단골실적:2,타사단골점수:2,"010실적":1,"010점수":1,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:3,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주광양",매장:"제주광양 터미널점",순위:17,점수합:1.5,전월비교:{타사단골:"▲ 11%","010":"▲ 9%",MNP:"당월無",MVNO:"당월無",초고속:"당월無",IPTV:"당월無"},타사단골실적:2,타사단골점수:2,"010실적":1,"010점수":1,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:3,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주굿모닝",매장:"제주굿모닝 연동점",순위:17,점수합:1.5,전월비교:{타사단골:"▲ 20%","010":"▲ 11%",MNP:"당월無",MVNO:"전월無당월有",초고속:"당월無",IPTV:"당월無"},타사단골실적:2,타사단골점수:2,"010실적":1,"010점수":1,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:3,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주굿모닝",매장:"제주굿모닝 성산점",순위:17,점수합:1.5,전월비교:{타사단골:"▲ 14%","010":"당월無",MNP:"▲ 33%",MVNO:"당월無",초고속:"전월無당월有",IPTV:"전월無당월有"},타사단골실적:1,타사단골점수:1,"010실적":0,"010점수":0,MNP실적:1,MNP점수:2,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:3,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"서귀포",매장:"서귀포 본점",순위:21,점수합:1.0,전월비교:{타사단골:"당월無","010":"▲ 9%",MNP:"당월無",MVNO:"당월無",초고속:"당월無",IPTV:"당월無"},타사단골실적:0,타사단골점수:0,"010실적":2,"010점수":2,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:2,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주정다운",매장:"제주정다운 서사라점",순위:21,점수합:1.0,전월비교:{타사단골:"▲ 18%","010":"당월無",MNP:"당월無",MVNO:"당월無",초고속:"당월無",IPTV:"당월無"},타사단골실적:2,타사단골점수:2,"010실적":0,"010점수":0,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:2,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"스마일",매장:"스마일 삼화점",순위:21,점수합:1.0,전월비교:{타사단골:"당월無","010":"당월無",MNP:"▲ 17%",MVNO:"전월無당월有",초고속:"전월無당월有",IPTV:"당월無"},타사단골실적:0,타사단골점수:0,"010실적":0,"010점수":0,MNP실적:1,MNP점수:2,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:2,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주",매장:"제주 본점",순위:21,점수합:1.0,전월비교:{타사단골:"당월無","010":"▲ 33%",MNP:"당월無",MVNO:"당월無",초고속:"전월無당월有",IPTV:"전월無당월有"},타사단골실적:0,타사단골점수:0,"010실적":2,"010점수":2,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:2,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주E&T",매장:"제주E&T 시청점",순위:25,점수합:0.5,전월비교:{타사단골:"▲ 17%","010":"당월無",MNP:"당월無",MVNO:"당월無",초고속:"당월無",IPTV:"당월無"},타사단골실적:1,타사단골점수:1,"010실적":0,"010점수":0,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:1,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주E&T",매장:"제주E&T 노형점",순위:25,점수합:0.5,전월비교:{타사단골:"당월無","010":"▲ 25%",MNP:"전월無당월有",MVNO:"전월無당월有",초고속:"전월無당월有",IPTV:"전월無당월有"},타사단골실적:0,타사단골점수:0,"010실적":1,"010점수":1,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:1,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주광양",매장:"제주광양 삼화점",순위:25,점수합:0.5,전월비교:{타사단골:"▲ 10%","010":"당월無",MNP:"당월無",MVNO:"당월無",초고속:"당월無",IPTV:"당월無"},타사단골실적:1,타사단골점수:1,"010실적":0,"010점수":0,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:1,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"서귀포",매장:"서귀포 녹원점",순위:25,점수합:0.5,전월비교:{타사단골:"당월無","010":"▲ 100%",MNP:"당월無",MVNO:"당월無",초고속:"전월無당월有",IPTV:"전월無당월有"},타사단골실적:0,타사단골점수:0,"010실적":1,"010점수":1,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:1,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"오름",매장:"오름 한림점",순위:25,점수합:0.5,전월비교:{타사단골:"당월無","010":"▲ 13%",MNP:"당월無",MVNO:"전월無당월有",초고속:"전월無당월有",IPTV:"전월無당월有"},타사단골실적:0,타사단골점수:0,"010실적":1,"010점수":1,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:1,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주광양",매장:"제주광양 서부점",순위:25,점수합:0.5,전월비교:{타사단골:"당월無","010":"▲ 14%",MNP:"당월無",MVNO:"전월無당월有",초고속:"전월無당월有",IPTV:"전월無당월有"},타사단골실적:0,타사단골점수:0,"010실적":1,"010점수":1,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:1,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주광양",매장:"제주광양 대학로점",순위:25,점수합:0.5,전월비교:{타사단골:"▲ 13%","010":"당월無",MNP:"당월無",MVNO:"전월無당월有",초고속:"전월無당월有",IPTV:"전월無당월有"},타사단골실적:1,타사단골점수:1,"010실적":0,"010점수":0,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:1,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주굿모닝",매장:"제주굿모닝 서문점",순위:25,점수합:0.5,전월비교:{타사단골:"▲ 10%","010":"당월無",MNP:"전월無당월有",MVNO:"전월無당월有",초고속:"전월無당월有",IPTV:"전월無당월有"},타사단골실적:1,타사단골점수:1,"010실적":0,"010점수":0,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:1,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"스마일",매장:"스마일 대정점",순위:25,점수합:0.5,전월비교:{타사단골:"전월無당월有","010":"▲ 14%",MNP:"당월無",MVNO:"전월無당월有",초고속:"전월無당월有",IPTV:"전월無당월有"},타사단골실적:0,타사단골점수:0,"010실적":1,"010점수":1,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:1,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주E&T",매장:"제주E&T 연북로점",순위:34,점수합:0.0,전월비교:{타사단골:"전월無당월有","010":"당월無",MNP:"당월無",MVNO:"당월無",초고속:"전월無당월有",IPTV:"전월無당월有"},타사단골실적:0,타사단골점수:0,"010실적":0,"010점수":0,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:0,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주광양",매장:"제주광양 아라점",순위:34,점수합:0.0,전월비교:{타사단골:"당월無","010":"당월無",MNP:"당월無",MVNO:"전월無당월有",초고속:"당월無",IPTV:"전월無당월有"},타사단골실적:0,타사단골점수:0,"010실적":0,"010점수":0,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:0,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"앤유",매장:"앤유 한림점",순위:34,점수합:0.0,전월비교:{타사단골:"전월無당월有","010":"당월無",MNP:"당월無",MVNO:"전월無당월有",초고속:"전월無당월有",IPTV:"전월無당월有"},타사단골실적:0,타사단골점수:0,"010실적":0,"010점수":0,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:0,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"앤유",매장:"앤유 본점",순위:34,점수합:0.0,전월비교:{타사단골:"당월無","010":"당월無",MNP:"당월無",MVNO:"전월無당월有",초고속:"전월無당월有",IPTV:"전월無당월有"},타사단골실적:0,타사단골점수:0,"010실적":0,"010점수":0,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:0,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주정다운",매장:"제주정다운 본점",순위:34,점수합:0.0,전월비교:{타사단골:"전월無당월有","010":"당월無",MNP:"전월無당월有",MVNO:"전월無당월有",초고속:"당월無",IPTV:"당월無"},타사단골실적:0,타사단골점수:0,"010실적":0,"010점수":0,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:0,팀20:0,팀30:0,팀소계:0},
-    {날짜:"2026-05-05",대리점:"제주정다운",매장:"제주정다운 외도점",순위:34,점수합:0.0,전월비교:{타사단골:"전월無당월有","010":"전월無당월有",MNP:"당월無",MVNO:"전월無당월有",초고속:"전월無당월有",IPTV:"전월無당월有"},타사단골실적:0,타사단골점수:0,"010실적":0,"010점수":0,MNP실적:0,MNP점수:0,MVNO실적:0,MVNO점수:0,초고속실적:0,초고속점수:0,IPTV실적:0,IPTV점수:0,매장소계:0,팀20:0,팀30:0,팀소계:0}
-  ];
-  return raw;
-})();
-
-// ===== 대리점 설정 =====
-const DEALER_CONFIG = {
-  "JS":        { color:"#6366f1", bg:"rgba(99,102,241,0.15)",  label:"JS" },
-  "서귀포":    { color:"#ec4899", bg:"rgba(236,72,153,0.15)", label:"서귀포" },
-  "스마일":    { color:"#f59e0b", bg:"rgba(245,158,11,0.15)", label:"스마일" },
-  "앤유":      { color:"#8b5cf6", bg:"rgba(139,92,246,0.15)", label:"앤유" },
-  "오름":      { color:"#10b981", bg:"rgba(16,185,129,0.15)", label:"오름" },
-  "제주":      { color:"#3b82f6", bg:"rgba(59,130,246,0.15)", label:"제주" },
-  "제주E&T":   { color:"#ef4444", bg:"rgba(239,68,68,0.15)",  label:"제주E&T" },
-  "제주광양":  { color:"#0ea5e9", bg:"rgba(14,165,233,0.15)", label:"제주광양" },
-  "제주굿모닝":{ color:"#f97316", bg:"rgba(249,115,22,0.15)", label:"제주굿모닝" },
-  "제주정다운":{ color:"#14b8a6", bg:"rgba(20,184,166,0.15)", label:"제주정다운" },
-  "제주중앙":  { color:"#84cc16", bg:"rgba(132,204,22,0.15)", label:"제주중앙" }
+// ===================== 대리점 설정 =====================
+const AGENCY_CONFIG = {
+  "JS":        { key:"js",              color:"#2563eb", bg:"#eff6ff" },
+  "서귀포":    { key:"seoguipo",        color:"#16a34a", bg:"#f0fdf4" },
+  "스마일":    { key:"smile",           color:"#f59e0b", bg:"#fffbeb" },
+  "앤유":      { key:"anyu",            color:"#a21caf", bg:"#fdf4ff" },
+  "오름":      { key:"oreum",           color:"#0891b2", bg:"#ecfeff" },
+  "제주":      { key:"jeju",            color:"#dc2626", bg:"#fef2f2" },
+  "제주E&T":   { key:"jejuet",          color:"#7c3aed", bg:"#f5f3ff" },
+  "제주광양":  { key:"jejugwangyang",   color:"#0d9488", bg:"#f0fdfa" },
+  "제주굿모닝":{ key:"jejugoodmorning", color:"#ea580c", bg:"#fff7ed" },
+  "제주정다운":{ key:"jejujungdawoon",  color:"#be185d", bg:"#fdf2f8" },
+  "제주중앙":  { key:"jejujungang",     color:"#4f46e5", bg:"#eef2ff" }
 };
 
-const DEALER_ORDER = ["JS","서귀포","스마일","앤유","오름","제주","제주E&T","제주광양","제주굿모닝","제주정다운","제주중앙"];
-
-// ===== 유틸 =====
+// ===================== 유틸 =====================
 function getRankBadge(r) {
-  if(r===1) return `<span class="rank-badge r1">1</span>`;
-  if(r===2) return `<span class="rank-badge r2">2</span>`;
-  if(r===3) return `<span class="rank-badge r3">3</span>`;
-  return `<span class="rank-badge rn">${r}</span>`;
+  if(r===1) return `<span class="rank-badge rank-1">1</span>`;
+  if(r===2) return `<span class="rank-badge rank-2">2</span>`;
+  if(r===3) return `<span class="rank-badge rank-3">3</span>`;
+  return `<span class="rank-badge rank-other">${r}</span>`;
 }
-function getScoreClass(s) {
-  if(s>=10) return 'score-high';
-  if(s>=3) return 'score-mid';
-  return 'score-low';
+function getAgencyTag(agency) {
+  const cfg = AGENCY_CONFIG[agency];
+  if(!cfg) return agency;
+  return `<span class="agency-tag" style="background:${cfg.color}">${agency}</span>`;
 }
-function getTrendBadge(v) {
-  if(!v || v==='') return '<span style="color:#475569">-</span>';
-  if(v==='당월無') return `<span class="trend-none" title="당월 실적 없음">당월無</span>`;
-  if(v==='전월無당월有') return `<span class="trend-new" title="전월 없음, 당월 신규">전월無당월有</span>`;
-  if(v.startsWith('▲')) return `<span class="trend-up">${v}</span>`;
-  return `<span style="color:#94a3b8">${v}</span>`;
+function cellVal(v, raw) {
+  const cls = v===0 ? 'cell-zero' : 'cell-pos';
+  return `<td class="${cls}" data-tooltip="원본값: ${raw}">${v}</td>`;
+}
+function trendCell(v) {
+  if(v==='당월無') return `<td class="trend-none" data-tooltip="${v}">-</td>`;
+  if(v==='전월無당월有') return `<td class="trend-new" data-tooltip="${v}">🆕</td>`;
+  return `<td class="trend-up" data-tooltip="${v}">${v}</td>`;
 }
 
-// ===== 대리점별 1위 매장 계산 =====
-function getTopByDealer() {
-  const map = {};
-  _d.forEach(row => {
-    const d = row.대리점;
-    if(!map[d] || row.점수합 > map[d].점수합) map[d] = row;
+// ===================== 대리점별 1위 카드 =====================
+function buildTopCards() {
+  const grid = document.getElementById('topCardsGrid');
+  const agencyBest = {};
+  RAW_DATA.forEach(d => {
+    if(!agencyBest[d.agency] || d.score > agencyBest[d.agency].score) {
+      agencyBest[d.agency] = d;
+    }
   });
-  return map;
+  let html = '';
+  Object.keys(AGENCY_CONFIG).forEach(ag => {
+    const cfg = AGENCY_CONFIG[ag];
+    const best = agencyBest[ag];
+    if(!best) return;
+    html += `
+    <div class="top-card" style="border-top-color:${cfg.color};background:${cfg.bg}">
+      <div class="top-card-agency" style="color:${cfg.color}">${ag} <span class="top-card-crown">👑</span></div>
+      <div class="top-card-store">${best.store}</div>
+      <div class="top-card-score" data-tooltip="점수합: ${best.score}점 | 순위: ${best.rank}위">
+        <b style="color:${cfg.color};font-size:1.2rem">${best.score}</b>점
+      </div>
+      <div class="top-card-rank">전체 ${best.rank}위</div>
+    </div>`;
+  });
+  grid.innerHTML = html;
 }
 
-// ===== 전체 순위 (점수합 기준) =====
-function getAllRanked() {
-  return [..._d].sort((a,b) => b.점수합 - a.점수합);
+// ===================== 종합현황 테이블 =====================
+function buildOverview() {
+  const sorted = [...RAW_DATA].sort((a,b) => a.rank - b.rank || b.score - a.score);
+  let html = '';
+  sorted.forEach(d => {
+    const cfg = AGENCY_CONFIG[d.agency] || {color:'#888',bg:'#fff'};
+    html += `<tr>
+      <td>${getAgencyTag(d.agency)}</td>
+      <td style="text-align:left;font-weight:600">${d.store}</td>
+      <td>${getRankBadge(d.rank)}</td>
+      <td class="score-high" data-tooltip="점수합: ${d.score}">${d.score}</td>
+      ${cellVal(d.danggol, d.danggol)}
+      ${cellVal(d.o010, d.o010)}
+      ${cellVal(d.mnp, d.mnp)}
+      ${cellVal(d.mvno, d.mvno)}
+      ${cellVal(d.speed, d.speed)}
+      ${cellVal(d.iptv, d.iptv)}
+      <td data-tooltip="매장실적소계: ${d.subtotal}"><b>${d.subtotal}</b></td>
+      <td data-tooltip="팀활동20점: ${d.ta20}">${d.ta20}</td>
+      <td data-tooltip="팀활동30점: ${d.ta30}">${d.ta30}</td>
+      <td data-tooltip="팀활동소계: ${d.tasum}"><b>${d.tasum}</b></td>
+    </tr>`;
+  });
+  document.getElementById('overviewBody').innerHTML = html;
 }
 
-// ===== AI 코멘트 생성 =====
-function generateAIComment(row) {
-  const allSorted = getAllRanked();
-  const myScore = row.점수합;
-  const myRank = allSorted.findIndex(r => r.매장 === row.매장) + 1;
-  const total = allSorted.length;
+// ===================== AI 코멘트 생성 =====================
+function generateAIComment(store) {
+  const d = RAW_DATA.find(x => x.store === store);
+  if(!d) return '데이터를 찾을 수 없습니다.';
 
-  if(myRank === 1) {
-    return `🏆 현재 전체 1위입니다! 지금의 실적을 유지하면서 팀활동 점수를 추가로 확보하면 격차를 더 벌릴 수 있습니다.`;
+  const allSorted = [...RAW_DATA].sort((a,b) => b.score - a.score);
+  const myIdx = allSorted.findIndex(x => x.store === store);
+  const totalStores = allSorted.length;
+
+  if(myIdx === 0) {
+    return `🏆 <b>${store}</b>는 현재 전체 ${totalStores}개 매장 중 <b>1위</b>입니다! 최고의 실적을 유지하고 있습니다. 앞으로도 MNP와 MVNO 실적을 꾸준히 유지하면 선두를 지킬 수 있습니다.`;
   }
 
-  const above = allSorted[myRank - 2]; // 바로 위 순위
-  const top1 = allSorted[0];
-  const top10 = allSorted[9] || allSorted[allSorted.length-1];
+  const above = allSorted[myIdx - 1];
+  const scoreDiff = (above.score - d.score).toFixed(1);
+  const top10 = allSorted[9];
+  const top5 = allSorted[4];
+  const top3 = allSorted[2];
 
-  const diffToAbove = above ? (above.점수합 - myScore).toFixed(1) : 0;
-  const diffToTop1 = (top1.점수합 - myScore).toFixed(1);
-  const diffToTop10 = myRank > 10 ? (top10.점수합 - myScore).toFixed(1) : null;
+  let comment = `📊 <b>${store}</b> 현재 분석 결과<br><br>`;
+  comment += `• 현재 전체 순위: <b>${myIdx+1}위</b> / ${totalStores}개 매장<br>`;
+  comment += `• 현재 점수합: <b>${d.score}점</b><br><br>`;
 
-  let comment = `📊 현재 전체 ${myRank}위 (점수합: ${myScore}점)\n`;
+  comment += `🎯 <b>상위 진입을 위한 목표</b><br>`;
 
-  if(above) {
-    comment += `▶ 바로 위 ${myRank-1}위 [${above.매장}](${above.점수합}점)까지 ${diffToAbove}점 차이입니다.\n`;
+  if(myIdx >= 1) {
+    comment += `• 바로 위 <b>${above.store}</b>(${above.score}점) 추월 → <b>${scoreDiff}점</b> 추가 필요<br>`;
   }
-  comment += `▶ 1위 [${top1.매장}](${top1.점수합}점)까지 ${diffToTop1}점 차이입니다.\n`;
-
-  if(diffToTop10 !== null) {
-    comment += `▶ TOP 10 진입을 위해 ${diffToTop10}점 추가 필요합니다.\n`;
+  if(myIdx > 2) {
+    const diff3 = (top3.score - d.score).toFixed(1);
+    comment += `• TOP 3 진입(${top3.score}점) → <b>${diff3}점</b> 추가 필요<br>`;
   }
-
-  // 부족한 항목 분석
-  const weakItems = [];
-  if(row.MNP실적 === 0) weakItems.push('MNP(건당 2점)');
-  if(row["010실적"] === 0) weakItems.push('010(건당 1점)');
-  if(row.MVNO실적 === 0) weakItems.push('MVNO(건당 3점)');
-  if(row.초고속실적 === 0) weakItems.push('초고속(건당 3점)');
-  if(row.IPTV실적 === 0) weakItems.push('IPTV(건당 3점)');
-  if(row.타사단골실적 === 0) weakItems.push('타사단골모집(건당 1점)');
-
-  if(weakItems.length > 0) {
-    comment += `💡 현재 실적 0인 항목: ${weakItems.join(', ')}\n`;
+  if(myIdx > 4) {
+    const diff5 = (top5.score - d.score).toFixed(1);
+    comment += `• TOP 5 진입(${top5.score}점) → <b>${diff5}점</b> 추가 필요<br>`;
+  }
+  if(myIdx > 9) {
+    const diff10 = (top10.score - d.score).toFixed(1);
+    comment += `• TOP 10 진입(${top10.score}점) → <b>${diff10}점</b> 추가 필요<br>`;
   }
 
-  // 구체적 목표 제시
-  const needed = parseFloat(diffToAbove) || 0;
-  if(needed > 0) {
-    const mnpNeeded = Math.ceil(needed / 2);
-    const mvnoNeeded = Math.ceil(needed / 3);
-    comment += `🎯 순위 상승 방법 예시:\n`;
-    comment += `   • MNP ${mnpNeeded}건 추가 → +${mnpNeeded*2}점\n`;
-    comment += `   • MVNO/초고속/IPTV ${mvnoNeeded}건 추가 → +${mvnoNeeded*3}점\n`;
-    comment += `   • 팀활동(20점+30점) 참여 시 최대 +50점 추가 가능`;
+  comment += `<br>💡 <b>실적 개선 포인트</b><br>`;
+
+  const improvements = [];
+  if(d.mnp === 0) improvements.push('MNP 실적 0건 → MNP 1건 추가 시 <b>+2점</b>');
+  if(d.mvno === 0) improvements.push('MVNO 실적 0건 → MVNO 1건 추가 시 <b>+3점</b>');
+  if(d.speed === 0) improvements.push('초고속 실적 0건 → 초고속 1건 추가 시 <b>+3점</b>');
+  if(d.iptv === 0) improvements.push('IPTV 실적 0건 → IPTV 1건 추가 시 <b>+3점</b>');
+  if(d.danggol < 3) improvements.push(`타사단골모집 현재 ${d.danggol}건 → 3건 달성 시 추가 점수 기대`);
+  if(d.o010 < 3) improvements.push(`010 실적 현재 ${d.o010}건 → 3건 달성 시 추가 점수 기대`);
+
+  if(improvements.length === 0) {
+    comment += '• 전 항목에서 고른 실적을 보이고 있습니다. MNP와 MVNO 건수를 더 늘려 점수를 극대화하세요!';
+  } else {
+    improvements.forEach(imp => { comment += `• ${imp}<br>`; });
   }
+
+  comment += `<br>📌 <b>핵심 전략</b><br>`;
+  comment += `• MNP 1건 = 2점, MVNO 1건 = 3점, 초고속 1건 = 3점, IPTV 1건 = 3점<br>`;
+  comment += `• 팀활동 30점 항목 미달성 시 추가 30점 획득 가능<br>`;
+  comment += `• 현재 팀활동 소계: <b>${d.tasum}점</b> (최대 50점)`;
 
   return comment;
 }
 
-// ===== 상단 카드 렌더링 =====
-function renderTopCards() {
-  const topMap = getTopByDealer();
-  const container = document.getElementById('top-cards');
+// ===================== 대리점별 탭 테이블 =====================
+function buildAgencyTable(agencyKey) {
+  const agencyName = Object.keys(AGENCY_CONFIG).find(k => AGENCY_CONFIG[k].key === agencyKey);
+  if(!agencyName) return;
+
+  const cfg = AGENCY_CONFIG[agencyName];
+  const stores = RAW_DATA.filter(d => d.agency === agencyName).sort((a,b) => a.rank - b.rank);
+
+  const headEl = document.getElementById(`agencyHead-${agencyKey}`);
+  const bodyEl = document.getElementById(`agencyBody-${agencyKey}`);
+
+  if(!headEl || !bodyEl) return;
+
+  headEl.innerHTML = `<tr>
+    <th style="background:${cfg.color}">매장</th>
+    <th style="background:${cfg.color}">점수합</th>
+    <th style="background:${cfg.color}">AI 코멘트</th>
+    <th style="background:${cfg.color}">타사단골모집</th>
+    <th style="background:${cfg.color}">010</th>
+    <th style="background:${cfg.color}">MNP</th>
+    <th style="background:${cfg.color}">MVNO</th>
+    <th style="background:${cfg.color}">초고속</th>
+    <th style="background:${cfg.color}">IPTV</th>
+    <th style="background:${cfg.color}">매장실적소계</th>
+    <th style="background:${cfg.color}">팀활동20점</th>
+    <th style="background:${cfg.color}">팀활동30점</th>
+    <th style="background:${cfg.color}">팀활동소계</th>
+  </tr>`;
+
   let html = '';
-  DEALER_ORDER.forEach(dealer => {
-    const cfg = DEALER_CONFIG[dealer];
-    const row = topMap[dealer];
-    if(!row) return;
-    const allSorted = getAllRanked();
-    const globalRank = allSorted.findIndex(r => r.매장 === row.매장) + 1;
-    html += `
-    <div class="dealer-card" style="background:${cfg.bg};border-color:${cfg.color}40;"
-         data-tooltip="대리점: ${dealer}\n1위 매장: ${row.매장}\n점수합: ${row.점수합}\n전체순위: ${globalRank}위">
-      <div class="crown">👑</div>
-      <div class="d-name" style="color:${cfg.color}">${dealer}</div>
-      <div class="d-store">${row.매장}</div>
-      <div class="d-score">${row.점수합} <span>점</span></div>
-      <div class="d-rank" style="color:${cfg.color}">전체 ${globalRank}위</div>
-    </div>`;
-  });
-  container.innerHTML = html;
-}
-
-// ===== 종합현황 탭 =====
-function renderOverallTab() {
-  const sorted = getAllRanked();
-  let rows = '';
-  sorted.forEach((row, idx) => {
-    const cfg = DEALER_CONFIG[row.대리점] || {color:'#94a3b8'};
-    const rankClass = row.순위===1?'rank-1':row.순위===2?'rank-2':row.순위===3?'rank-3':'';
-    rows += `<tr class="${rankClass}">
-      <td><span class="dealer-tag" style="background:${cfg.color}">${row.대리점}</span></td>
-      <td>${getRankBadge(row.순위)}</td>
-      <td class="${getScoreClass(row.점수합)}" data-tooltip="점수합: ${row.점수합}\n매장실적소계: ${row.매장소계}\n팀활동소계: ${row.팀소계}">${row.점수합}</td>
-      <td data-tooltip="타사단골모집 실적: ${row.타사단골실적}건\n평가환산점수: ${row.타사단골점수}점\n전월대비: ${row.전월비교.타사단골}">${row.타사단골실적}</td>
-      <td data-tooltip="010 실적: ${row["010실적"]}건\n평가환산점수: ${row["010점수"]}점\n전월대비: ${row.전월비교["010"]}">${row["010실적"]}</td>
-      <td data-tooltip="MNP 실적: ${row.MNP실적}건\n평가환산점수: ${row.MNP점수}점\n전월대비: ${row.전월비교.MNP}">${row.MNP실적}</td>
-      <td data-tooltip="MVNO 실적: ${row.MVNO실적}건\n평가환산점수: ${row.MVNO점수}점\n전월대비: ${row.전월비교.MVNO}">${row.MVNO실적}</td>
-      <td data-tooltip="초고속 실적: ${row.초고속실적}건\n평가환산점수: ${row.초고속점수}점\n전월대비: ${row.전월비교.초고속}">${row.초고속실적}</td>
-      <td data-tooltip="IPTV 실적: ${row.IPTV실적}건\n평가환산점수: ${row.IPTV점수}점\n전월대비: ${row.전월비교.IPTV}">${row.IPTV실적}</td>
-      <td data-tooltip="매장실적소계: ${row.매장소계}점\n(타사단골${row.타사단골점수}+010 ${row["010점수"]}+MNP ${row.MNP점수}+MVNO ${row.MVNO점수}+초고속${row.초고속점수}+IPTV ${row.IPTV점수})">${row.매장소계}</td>
-      <td data-tooltip="팀활동 20점: ${row.팀20}">${row.팀20}</td>
-      <td data-tooltip="팀활동 30점: ${row.팀30}">${row.팀30}</td>
-      <td data-tooltip="팀활동소계: ${row.팀소계}">${row.팀소계}</td>
+  stores.forEach((d, idx) => {
+    const isTop = idx === 0;
+    const rowStyle = isTop ? `background:${cfg.bg};font-weight:700;` : '';
+    const storeLabel = isTop ? `👑 ${d.store}` : d.store;
+    html += `<tr style="${rowStyle}">
+      <td style="text-align:left;font-weight:600" data-tooltip="전체순위: ${d.rank}위">${storeLabel}</td>
+      <td class="score-high" data-tooltip="점수합: ${d.score}점">${d.score}</td>
+      <td><button class="ai-btn" onclick="showAIComment('${d.store.replace(/'/g,"\\'")}')">🤖 AI 분석</button></td>
+      ${cellVal(d.danggol, `타사단골: ${d.danggol}건 / 전월대비: ${d.t_danggol}`)}
+      ${cellVal(d.o010, `010: ${d.o010}건 / 전월대비: ${d.t_010}`)}
+      ${cellVal(d.mnp, `MNP: ${d.mnp}건 / 전월대비: ${d.t_mnp}`)}
+      ${cellVal(d.mvno, `MVNO: ${d.mvno}건 / 전월대비: ${d.t_mvno}`)}
+      ${cellVal(d.speed, `초고속: ${d.speed}건 / 전월대비: ${d.t_speed}`)}
+      ${cellVal(d.iptv, `IPTV: ${d.iptv}건 / 전월대비: ${d.t_iptv}`)}
+      <td data-tooltip="매장실적소계: ${d.subtotal}점"><b>${d.subtotal}</b></td>
+      <td data-tooltip="팀활동20점: ${d.ta20}">${d.ta20}</td>
+      <td data-tooltip="팀활동30점: ${d.ta30}">${d.ta30}</td>
+      <td data-tooltip="팀활동소계: ${d.tasum}"><b>${d.tasum}</b></td>
     </tr>`;
   });
-
-  return `
-  <div class="data-table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>대리점</th><th>순위</th><th>점수합</th>
-          <th>타사단골모집</th><th>010</th><th>MNP</th><th>MVNO</th><th>초고속</th><th>IPTV</th>
-          <th>매장실적소계</th><th>팀활동20점</th><th>팀활동30점</th><th>팀활동소계</th>
-        </tr>
-      </thead>
-      <tbody>${rows}</tbody>
-    </table>
-  </div>`;
+  bodyEl.innerHTML = html;
 }
 
-// ===== 대리점별 탭 =====
-function renderDealerTab(dealer) {
-  const stores = _d.filter(r => r.대리점 === dealer).sort((a,b) => b.점수합 - a.점수합);
-  const allSorted = getAllRanked();
-  const cfg = DEALER_CONFIG[dealer] || {color:'#94a3b8'};
-  let rows = '';
+// ===================== 탭 전환 =====================
+function switchTab(tabKey, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`panel-${tabKey}`).classList.add('active');
+  btn.classList.add('active');
 
-  stores.forEach((row, idx) => {
-    const globalRank = allSorted.findIndex(r => r.매장 === row.매장) + 1;
-    const rankClass = globalRank===1?'rank-1':globalRank===2?'rank-2':globalRank===3?'rank-3':'';
-    const rowId = `row-${dealer}-${idx}`;
-    const commentId = `comment-${dealer}-${idx}`;
-
-    rows += `<tr class="${rankClass}" id="${rowId}">
-      <td data-tooltip="매장: ${row.매장}\n대리점: ${row.대리점}\n전체순위: ${globalRank}위">
-        <span style="color:${cfg.color};font-weight:700">${row.매장}</span>
-        <span style="font-size:10px;color:#64748b;margin-left:4px">(전체 ${globalRank}위)</span>
-      </td>
-      <td class="${getScoreClass(row.점수합)}" data-tooltip="점수합: ${row.점수합}\n매장실적소계: ${row.매장소계}\n팀활동소계: ${row.팀소계}">${row.점수합}</td>
-      <td><button class="ai-btn" onclick="toggleAIComment('${commentId}','${row.매장}',${idx},'${dealer}')">💡 AI 분석</button></td>
-      <td data-tooltip="타사단골모집 실적: ${row.타사단골실적}건\n평가환산점수: ${row.타사단골점수}점\n전월대비: ${row.전월비교.타사단골}">${row.타사단골실적}</td>
-      <td data-tooltip="010 실적: ${row["010실적"]}건\n평가환산점수: ${row["010점수"]}점\n전월대비: ${row.전월비교["010"]}">${row["010실적"]}</td>
-      <td data-tooltip="MNP 실적: ${row.MNP실적}건\n평가환산점수: ${row.MNP점수}점\n전월대비: ${row.전월비교.MNP}">${row.MNP실적}</td>
-      <td data-tooltip="MVNO 실적: ${row.MVNO실적}건\n평가환산점수: ${row.MVNO점수}점\n전월대비: ${row.전월비교.MVNO}">${row.MVNO실적}</td>
-      <td data-tooltip="초고속 실적: ${row.초고속실적}건\n평가환산점수: ${row.초고속점수}점\n전월대비: ${row.전월비교.초고속}">${row.초고속실적}</td>
-      <td data-tooltip="IPTV 실적: ${row.IPTV실적}건\n평가환산점수: ${row.IPTV점수}점\n전월대비: ${row.전월비교.IPTV}">${row.IPTV실적}</td>
-      <td data-tooltip="매장실적소계: ${row.매장소계}점">${row.매장소계}</td>
-      <td data-tooltip="팀활동 20점: ${row.팀20}">${row.팀20}</td>
-      <td data-tooltip="팀활동 30점: ${row.팀30}">${row.팀30}</td>
-      <td data-tooltip="팀활동소계: ${row.팀소계}">${row.팀소계}</td>
-    </tr>
-    <tr id="${commentId}" class="ai-comment-row" style="display:none;">
-      <td colspan="13"><div id="${commentId}-text" style="white-space:pre-line;"></div></td>
-    </tr>`;
-  });
-
-  return `
-  <div style="padding:12px 0 6px;font-size:13px;color:${cfg.color};font-weight:700;">
-    🏪 ${dealer} 대리점 — 소속 매장 ${stores.length}개
-  </div>
-  <div class="data-table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>매장</th><th>점수합</th><th>AI 코멘트</th>
-          <th>타사단골모집</th><th>010</th><th>MNP</th><th>MVNO</th><th>초고속</th><th>IPTV</th>
-          <th>매장실적소계</th><th>팀활동20점</th><th>팀활동30점</th><th>팀활동소계</th>
-        </tr>
-      </thead>
-      <tbody>${rows}</tbody>
-    </table>
-  </div>`;
-}
-
-// ===== AI 코멘트 토글 =====
-function toggleAIComment(commentId, storeName, idx, dealer) {
-  const row = document.getElementById(commentId);
-  const textDiv = document.getElementById(commentId + '-text');
-  if(!row) return;
-  if(row.style.display === 'none') {
-    const storeData = _d.find(r => r.매장 === storeName);
-    if(storeData) {
-      textDiv.textContent = generateAIComment(storeData);
-    }
-    row.style.display = 'table-row';
-  } else {
-    row.style.display = 'none';
+  // 대리점 탭이면 테이블 빌드
+  const agencyKeys = Object.values(AGENCY_CONFIG).map(c => c.key);
+  if(agencyKeys.includes(tabKey)) {
+    buildAgencyTable(tabKey);
   }
 }
 
-// ===== 탭 시스템 =====
-let currentTab = 'overall';
-
-function renderTabs() {
-  const tabBar = document.getElementById('tab-bar');
-  const tabs = [
-    {id:'overall', label:'📊 종합현황'},
-    ...DEALER_ORDER.map(d => ({id:'dealer-'+d, label:d}))
-  ];
-  tabBar.innerHTML = tabs.map(t =>
-    `<button class="tab-btn${t.id===currentTab?' active':''}" onclick="switchTab('${t.id}')">${t.label}</button>`
-  ).join('');
+// ===================== AI 모달 =====================
+function showAIComment(store) {
+  document.getElementById('modalTitle').innerHTML = `🤖 AI 실적 분석: ${store}`;
+  document.getElementById('modalBody').innerHTML = generateAIComment(store);
+  document.getElementById('aiModal').classList.add('show');
 }
-
-function switchTab(tabId) {
-  currentTab = tabId;
-  renderTabs();
-  renderTabContent();
+function closeModal() {
+  document.getElementById('aiModal').classList.remove('show');
 }
-
-function renderTabContent() {
-  const content = document.getElementById('tab-content');
-  let html = '';
-  if(currentTab === 'overall') {
-    html = `<div class="tab-panel active">${renderOverallTab()}</div>`;
-  } else {
-    const dealer = currentTab.replace('dealer-','');
-    html = `<div class="tab-panel active">${renderDealerTab(dealer)}</div>`;
-  }
-  content.innerHTML = html;
-}
-
-// ===== 초기화 =====
-function init() {
-  renderTopCards();
-  renderTabs();
-  renderTabContent();
-  document.getElementById('loading').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-  setTimeout(init, 600);
+document.getElementById('aiModal').addEventListener('click', function(e) {
+  if(e.target === this) closeModal();
 });
+
+// ===================== 초기화 =====================
+buildTopCards();
+buildOverview();
 </script>
 </body>
 </html>
